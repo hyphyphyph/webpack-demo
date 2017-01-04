@@ -3,11 +3,15 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
 
-const parts = require('./webpack.parts');
+const parts = {
+  script: require('./webpack.script.parts'),
+  style: require('./webpack.style.parts'),
+  util: require('./webpack.util.parts')
+};
 
 const PATHS = {
-  app: path.join(__dirname, 'app'),
-  build: path.join(__dirname, 'build')
+  app: path.join(__dirname, '../app'),
+  build: path.join(__dirname, '../build')
 };
 
 const common = merge(
@@ -25,8 +29,8 @@ const common = merge(
       })
     ]
   },
-  parts.lintCSS(PATHS.app),
-  parts.lintJavaScript(PATHS.app)
+  parts.style.PostCss(PATHS.app),
+  parts.script.EsLint(PATHS.app)
 );
 
 module.exports = function(env) {
@@ -45,13 +49,13 @@ module.exports = function(env) {
           new webpack.HashedModuleIdsPlugin()
         ]
       },
-      parts.setFreeVariable(
+      parts.util.setFreeVariable(
         'process.env.NODE_ENV',
         'production'
       ),
-      parts.loadJavaScript(PATHS.app),
-      parts.minifyJavaScript(),
-      parts.extractBundles([
+      parts.script.loadJavaScript(PATHS.app),
+      parts.script.minifyJavaScript(),
+      parts.util.extractBundles([
         {
           name: 'vendor',
           entries: ['react']
@@ -60,10 +64,10 @@ module.exports = function(env) {
           name: 'manifest'
         }
       ]),
-      parts.clean(PATHS.build),
-      parts.generateSourcemaps('source-map'),
-      parts.extractCSS(),
-      parts.purifyCSS(PATHS.app)
+      parts.util.clean(PATHS.build),
+      parts.util.generateSourcemaps('source-map'),
+      parts.style.extractCSS(),
+      parts.style.purifyCSS(PATHS.app)
     );
   }
 
@@ -78,9 +82,9 @@ module.exports = function(env) {
         new webpack.NamedModulesPlugin()
       ]
     },
-    parts.generateSourcemaps('eval-source-map'),
-    parts.loadCSS(),
-    parts.devServer({
+    parts.util.generateSourcemaps('eval-source-map'),
+    parts.style.loadCSS(),
+    parts.util.devServer({
       // Customize host/port here if needed
       host: process.env.HOST,
       port: process.env.PORT

@@ -1,3 +1,9 @@
+@value something: #39ace6;
+
 body {
-  background: cornsilk;
+  background: something;
+}
+
+.hello {
+  background: something;
 }

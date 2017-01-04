@@ -35,6 +35,7 @@
     "webpack-merge": "^2.0.0"
   },
   "dependencies": {
+    "postcss-modules": "^0.5.2",
     "purecss": "^0.6.1",
     "react": "^15.4.1"
   }

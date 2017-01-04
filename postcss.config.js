@@ -6,6 +6,7 @@ module.exports = {
       },
       // Ignore node_modules CSS
       ignoreFiles: 'node_modules/**/*.css'
-    }
+    },
+    'postcss-modules': true
   }
 };

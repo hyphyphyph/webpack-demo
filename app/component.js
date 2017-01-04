@@ -1,7 +1,10 @@
+import './component.css';
+import styles from './component.css.json';
+
 export default function () {
   const element = document.createElement('h1');
 
-  element.className = 'pure-button';
+  element.className = styles.component + ' pure-button';
   element.innerHTML = 'Hello world';
   element.onclick = () => {
     import('./lazy').then((lazy) => {
